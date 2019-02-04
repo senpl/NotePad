@@ -17,7 +17,8 @@
   -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="app_preference_screen_sync" >
-    
+    <!--android:summary="@string/gtasks_sync_info"-->
+
     <PreferenceCategory
         android:key="pref_gtask_section_key"
         android:persistent="false"
@@ -25,7 +26,6 @@
         <com.nononsenseapps.notepad.ui.settings.FixedSwitchPreference
             android:defaultValue="false"
             android:key="syncEnablePref"
-            android:summary="@string/gtasks_sync_info"
             android:title="@string/settings_sync_enable_title" />
 
         <Preference

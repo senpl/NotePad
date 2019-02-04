@@ -22,25 +22,26 @@ buildscript {
   dependencies {
     classpath 'com.android.tools.build:gradle:2.2.1'
     // the latest version of the android-apt plugin for annotations
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+    //classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
     // For publishing stuff to Google Play
-    classpath 'com.github.triplet.gradle:play-publisher:1.1.4'
+//    classpath 'com.github.triplet.gradle:play-publisher:1.1.4'
   }
 }
 
 // Apply android plugin first
 apply plugin: 'com.android.application'
-apply plugin: 'com.github.triplet.play'
+//apply plugin: 'com.github.triplet.play'
 
 repositories {
+  google()
   jcenter()
 }
 
-play {
-  track = 'beta'
-  serviceAccountEmail = '724886095148-vib4jepvj4q8snt1hrqtopncijipk1eu@developer.gserviceaccount.com'
-  pk12File = file('/home/jonas/.ssh/Google Play Android Developer-bda1f9b450d2.p12')
-}
+//play {
+////  track = 'beta'
+////  serviceAccountEmail = '724886095148-vib4jepvj4q8snt1hrqtopncijipk1eu@developer.gserviceaccount.com'
+////  pk12File = file('/home/jonas/.ssh/Google Play Android Developer-bda1f9b450d2.p12')
+//}
 
 // query git for the the SHA, Tag and commit count. Use these to automate versioning.
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
@@ -49,8 +50,11 @@ def gitCommitCount =
         Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
 
 android {
-  compileSdkVersion 23
-  buildToolsVersion '23.0.3'
+
+  compileSdkVersion 27
+  buildToolsVersion '27.1.0'
+
+  flavorDimensions "default"
 
   dataBinding.enabled = true
 
@@ -64,9 +68,10 @@ android {
   }
 
   defaultConfig {
+    multiDexEnabled true
     applicationId "com.nononsenseapps.notepad"
-    minSdkVersion 14
-    targetSdkVersion 23
+    minSdkVersion 26
+    targetSdkVersion 27
     // 60000 to be above all previous versions before gitCommitCount was used
     versionCode 60000 + gitCommitCount
     versionName gitTag
@@ -83,20 +88,20 @@ android {
 
   productFlavors {
     free {}
-    play {
-      // If Non-Free libraries are to be used
-      buildConfigField "boolean", "NONFREE", "true"
-      buildConfigField "boolean", "DROPBOX_ENABLED", "true"
-    }
+//    play {
+//      // If Non-Free libraries are to be used
+//      buildConfigField "boolean", "NONFREE", "true"
+//      buildConfigField "boolean", "DROPBOX_ENABLED", "true"
+//    }
   }
 
   sourceSets {
-    playBeta {
-      // Include play sources
-      java.srcDirs = ['src/play/java']
-      res.srcDirs = ['src/play/res', 'src/playBeta/res']
-      manifest.srcFile 'src/play/AndroidManifest.xml'
-    }
+//    playBeta {
+//      // Include play sources
+//      java.srcDirs = ['src/play/java']
+//      res.srcDirs = ['src/play/res', 'src/playBeta/res']
+//      manifest.srcFile 'src/play/AndroidManifest.xml'
+//    }
   }
 
   if (project.hasProperty('STORE_FILE')) {
@@ -121,10 +126,10 @@ android {
 
 dependencies {
   //compile fileTree(dir: 'libs', include: '*.jar')
-  compile 'com.android.support:support-v4:23.1.0'
-  compile "com.android.support:appcompat-v7:23.1.0"
-  compile 'com.android.support:design:23.1.0'
-  compile 'com.android.support:recyclerview-v7:23.1.0'
+//  compile 'com.android.support:support-v4:23.1.0'
+  compile "com.android.support:appcompat-v7:27.1.0"
+  compile 'com.android.support:design:27.1.0'
+  compile 'com.android.support:recyclerview-v7:27.1.0'
   //compile 'com.android.support:preference-v7:23.1.0'
   compile 'joda-time:joda-time:2.3'
   // Dashclock
@@ -138,8 +143,8 @@ dependencies {
   // Included libraries
   compile project(':external:datetimepicker')
   // Dropbox and non-free stuff
-  playCompile fileTree(dir: 'src/play/libs', include: '*.jar')
-  playBetaCompile fileTree(dir: 'src/play/libs', include: '*.jar')
+//  playCompile fileTree(dir: 'src/play/libs', include: '*.jar')
+//  playBetaCompile fileTree(dir: 'src/play/libs', include: '*.jar')
   // Tests
   androidTestCompile 'com.squareup.spoon:spoon-client:1.1.1'
   androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {

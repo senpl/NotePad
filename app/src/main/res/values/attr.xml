@@ -73,7 +73,7 @@
 
     <attr name="labelAddItemTextColor" format="reference|color" />
 
-
+<attr name="fontVariationSettings" format="string"/>
     <attr name="TaskListItem" format="reference" />
     <attr name="ListMarginStyle" format="reference"/>
 
